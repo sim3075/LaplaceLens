@@ -32,15 +32,12 @@ def calculate_gamma(value, alpha, beta, direction):
         return 1 - gamma_dist.cdf(value)
 
 def calculate_binomial(n, p, k, direction):
-    # P(X = k)
     if direction == 'equal':
         return float(binom.pmf(k, n, p))
     
-    # P(X < k)
     elif direction == 'less_than':
         return float(binom.cdf(k - 1, n, p))
 
-    # P(X > k)
     elif direction == 'greater_than':
         return float(1 - binom.cdf(k - 1, n, p))
 
