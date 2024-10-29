@@ -6,7 +6,7 @@
     <title>Distribución Gamma</title>
 </head>
 <body>
-    <h1>Distribución Gamma</h1>
+    <h1>Distribución gamma</h1>
     
     <form action="/calculate" method="post">
         <!-- Campo oculto para la distribución -->
@@ -32,12 +32,6 @@
 
     <a href="/">Volver a la seleccion de distribuciones</a>
 
-    {% if result is not none %}
-        <h2>Resultado:</h2>
-        <p>{{ result }}</p>
-        {% if graph is not none %}
-            <img src="data:image/png;base64,{{ graph }}" alt="Gráfica de la distribución Gamma">
-        {% endif %}
-    {% endif %}
+   
 </body>
 </html>

@@ -31,8 +31,18 @@ def calculate_gamma(value, alpha, beta, direction):
     elif direction == 'greater_than':
         return 1 - gamma_dist.cdf(value)
 
-def calculate_binomial(n, p, k):
-    return binom.cdf(k, n, p)
+def calculate_binomial(n, p, k, direction):
+    # P(X = k)
+    if direction == 'equal':
+        return float(binom.pmf(k, n, p))
+    
+    # P(X < k)
+    elif direction == 'less_than':
+        return float(binom.cdf(k - 1, n, p))
+
+    # P(X > k)
+    elif direction == 'greater_than':
+        return float(1 - binom.cdf(k - 1, n, p))
 
 def calculate_poisson(value, mu):
     return poisson.cdf(value, mu)
@@ -47,7 +57,6 @@ def calculate_exponential(value, scale):
     return expon.cdf(value, scale=scale)
 
 #FUNCIONES PARQA GRAFICAS DE LAS FINCIONES 
-
 def plot_normal_distribution(mean, stddev, value, direction):
     x = np.linspace(mean - 4 * stddev, mean + 4 * stddev, 1000)
     y = norm.pdf(x, mean, stddev)
@@ -107,7 +116,7 @@ def plot_chi2_distribution(df, value, direction):
     return base64.b64encode(buf.getvalue()).decode('utf8')
 
 def plot_gamma_distribution(alpha, beta, value, direction):
-    x = np.linspace(0, 30, 1000)  # Rango de x para la distribución
+    x = np.linspace(0, 30, 1000)  
     scale = 1 / beta
     y = gamma.pdf(x, alpha, scale=scale)
 
@@ -136,6 +145,35 @@ def plot_gamma_distribution(alpha, beta, value, direction):
     buf.seek(0)
     return base64.b64encode(buf.getvalue()).decode('utf8')
 
+
+def plot_binomial_distribution(n, p, k, direction):
+    x = np.arange(0, n + 1)
+    y = binom.pmf(x, n, p)
+    
+    fig, ax = plt.subplots()
+    ax.bar(x, y, label='Distribución Binomial', color='blue', alpha=0.7)
+    
+    ax.axvline(k, color='red', linestyle='--', label=f'Valor: {k}')
+    
+    if direction == 'equal':
+        ax.bar(k, binom.pmf(k, n, p), color='orange', alpha=0.7, label=f'P(X = {k})')
+    elif direction == 'less_than':
+        ax.bar(x[x < k], y[x < k], color='orange', alpha=0.7, label=f'P(X < {k})')
+    elif direction == 'greater_than':
+        ax.bar(x[x > k], y[x > k], color='orange', alpha=0.7, label=f'P(X > {k})')
+    
+    ax.set_title('Distribución Binomial')
+    ax.set_xlabel('Número de éxitos (X)')
+    ax.set_ylabel('Probabilidad')
+    ax.legend()
+    ax.grid(True)
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    
+    return base64.b64encode(buf.getvalue()).decode('utf8')
 
 @app.route('/')
 def index():
@@ -203,11 +241,14 @@ def calculate():
         result = calculate_gamma(value, alpha, beta, direction)
         graph = plot_gamma_distribution(alpha, beta, value, direction)
 
-    elif distribution == 'binomial':
+    if distribution == 'binomial':
         n = int(request.form['n'])
         p = float(request.form['p'])
         k = int(request.form['k'])
-        result = calculate_binomial(n, p, k)
+        direction = request.form.get('direction', 'less_than')  
+        result = calculate_binomial(n, p, k, direction)
+        graph = plot_binomial_distribution(n, p, k, direction) 
+
     elif distribution == 'poisson':
         mu = float(request.form['mu'])
         result = calculate_poisson(value, mu)

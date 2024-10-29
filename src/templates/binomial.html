@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribución Binomial</title>
+</head>
+<body>
+    <h1>Distribución Binomial</h1>
+    <form action="/calculate" method="post">
+        <input type="hidden" name="distribution" value="binomial">
+        
+        <label for="n">Ingrese el número de ensayos (n):</label>
+        <input type="number" id="n" name="n" required>
+
+        <label for="p">Ingrese la probabilidad de éxito (p):</label>
+        <input type="number" id="p" name="p" step="any" required>
+
+        <label for="k">Ingrese el número de éxitos (k):</label>
+        <input type="number" id="k" name="k" required>
+
+        <<label for="direction">Seleccione la dirección:</label>
+        <select id="direction" name="direction" required>
+            <option value="equal">P(X = x)</option>
+            <option value="less_than">P(X < x)</option>
+            <option value="greater_than">P(X > x)</option>
+        </select>
+        
+
+        <button type="submit">Calcular</button>
+    </form>
+
+</body>
+</html>
