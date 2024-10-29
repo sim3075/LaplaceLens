@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribución Gamma</title>
+</head>
+<body>
+    <h1>Distribución Gamma</h1>
+    
+    <form action="/calculate" method="post">
+        <!-- Campo oculto para la distribución -->
+        <input type="hidden" name="distribution" value="gamma">
+
+        <label for="alpha">Parámetro Alfa (α):</label>
+        <input type="number" step="any" name="alpha" id="alpha" required>
+
+        <label for="beta">Parámetro Beta (β):</label>
+        <input type="number" step="any" name="beta" id="beta" required>
+
+        <label for="value">Valor de x:</label>
+        <input type="number" step="any" name="value" id="value" required>
+
+        <label for="direction">Dirección:</label>
+        <select name="direction" id="direction">
+            <option value="less_than">P(X < x)</option>
+            <option value="greater_than">P(X > x)</option>
+        </select>
+
+        <button type="submit">Calcular</button>
+    </form>
+
+    <a href="/">Volver a la selección de distribuciones</a>
+</body>
+</html>

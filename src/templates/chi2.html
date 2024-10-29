@@ -1,0 +1,16 @@
+<form action="/calculate" method="post">
+    <input type="hidden" name="distribution" value="chi2">
+    <label for="df">Grados de libertad (df):</label>
+    <input type="number" name="df" id="df" required>
+
+    <label for="value">Valor:</label>
+    <input type="number" name="value" id="value" required>
+
+    <label for="direction">Dirección:</label>
+    <select name="direction" id="direction">
+        <option value="less_than">P(X < x)</option>
+        <option value="greater_than">P(X > x)</option>
+    </select>
+
+    <button type="submit">Calcular</button>
+</form>

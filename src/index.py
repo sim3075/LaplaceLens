@@ -23,8 +23,13 @@ def calculate_chi2(value, direction, df):
     elif direction == 'greater_than':
         return 1 - chi2.cdf(value, df) 
     
-def calculate_gamma(value, shape):
-    return gamma.cdf(value, shape)
+def calculate_gamma(value, alpha, beta, direction):
+    scale = 1 / beta
+    gamma_dist = gamma(alpha, scale=scale)
+    if direction == 'less_than':
+        return gamma_dist.cdf(value)
+    elif direction == 'greater_than':
+        return 1 - gamma_dist.cdf(value)
 
 def calculate_binomial(n, p, k):
     return binom.cdf(k, n, p)
@@ -101,6 +106,36 @@ def plot_chi2_distribution(df, value, direction):
     buf.seek(0)
     return base64.b64encode(buf.getvalue()).decode('utf8')
 
+def plot_gamma_distribution(alpha, beta, value, direction):
+    x = np.linspace(0, 30, 1000)  # Rango de x para la distribución
+    scale = 1 / beta
+    y = gamma.pdf(x, alpha, scale=scale)
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y, label='Distribución Gamma', color='blue')
+    ax.axvline(value, color='red', linestyle='--', label=f'Valor: {value}')
+
+    if direction == 'less_than':
+        x_fill = np.linspace(0, value, 1000)
+        y_fill = gamma.pdf(x_fill, alpha, scale=scale)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X < x)')
+    elif direction == 'greater_than':
+        x_fill = np.linspace(value, 30, 1000)
+        y_fill = gamma.pdf(x_fill, alpha, scale=scale)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X > x)')
+
+    ax.set_title('Distribución Gamma')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Densidad de Probabilidad')
+    ax.legend()
+    ax.grid()
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    return base64.b64encode(buf.getvalue()).decode('utf8')
+
 
 
 
@@ -146,6 +181,7 @@ def poisson_distribution():
 def calculate():
     distribution = request.form.get('distribution')  
     value = float(request.form.get('value', 0)) 
+    graph = None
     
     if distribution == 'normal':      
         direction = request.form.get('direction', 'less_than')
@@ -158,14 +194,15 @@ def calculate():
         direction = request.form.get('direction', 'less_than')
         df = float(request.form['df'])  
         direction = request.form.get('direction', 'less_than')
-     
-        
         result = calculate_chi2(value, direction, df)  
         graph = plot_chi2_distribution(df, value, direction)
 
     elif distribution == 'gamma':
-        shape = float(request.form['shape'])
-        result = calculate_gamma(value, shape)
+        alpha = float(request.form['alpha'])
+        beta = float(request.form['beta'])
+        direction = request.form.get('direction', 'less_than')
+        result = calculate_gamma(value, alpha, beta, direction)
+
     elif distribution == 'binomial':
         n = int(request.form['n'])
         p = float(request.form['p'])
