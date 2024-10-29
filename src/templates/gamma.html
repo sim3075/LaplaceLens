@@ -12,10 +12,10 @@
         <!-- Campo oculto para la distribución -->
         <input type="hidden" name="distribution" value="gamma">
 
-        <label for="alpha">Parámetro Alfa (α):</label>
+        <label for="alpha">Parametro Alfa (α):</label>
         <input type="number" step="any" name="alpha" id="alpha" required>
 
-        <label for="beta">Parámetro Beta (β):</label>
+        <label for="beta">Parametro Beta (β):</label>
         <input type="number" step="any" name="beta" id="beta" required>
 
         <label for="value">Valor de x:</label>
@@ -30,6 +30,14 @@
         <button type="submit">Calcular</button>
     </form>
 
-    <a href="/">Volver a la selección de distribuciones</a>
+    <a href="/">Volver a la seleccion de distribuciones</a>
+
+    {% if result is not none %}
+        <h2>Resultado:</h2>
+        <p>{{ result }}</p>
+        {% if graph is not none %}
+            <img src="data:image/png;base64,{{ graph }}" alt="Gráfica de la distribución Gamma">
+        {% endif %}
+    {% endif %}
 </body>
 </html>

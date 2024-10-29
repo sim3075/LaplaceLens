@@ -137,8 +137,6 @@ def plot_gamma_distribution(alpha, beta, value, direction):
     return base64.b64encode(buf.getvalue()).decode('utf8')
 
 
-
-
 @app.route('/')
 def index():
     continuous = ['Normal', 'Chi-cuadrado', 'Gamma', 'T-Student', 'F', 'Exponencial']
@@ -182,6 +180,7 @@ def calculate():
     distribution = request.form.get('distribution')  
     value = float(request.form.get('value', 0)) 
     graph = None
+    result = None
     
     if distribution == 'normal':      
         direction = request.form.get('direction', 'less_than')
@@ -202,6 +201,7 @@ def calculate():
         beta = float(request.form['beta'])
         direction = request.form.get('direction', 'less_than')
         result = calculate_gamma(value, alpha, beta, direction)
+        graph = plot_gamma_distribution(alpha, beta, value, direction)
 
     elif distribution == 'binomial':
         n = int(request.form['n'])
