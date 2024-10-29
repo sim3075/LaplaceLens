@@ -1,14 +1,23 @@
-.venv/
+# Ignore Python virtual environment folder
+venv/
 
-*.pyc
+# Ignore compiled Python files
 __pycache__/
+*.py[cod]
 
-instance/
-
-.pytest_cache/
-.coverage
-htmlcov/
-
+# Ignore distribution/package files
+*.egg
+*.egg-info/
 dist/
 build/
-*.egg-info/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Ignore log files and database
+*.log
+*.sqlite3
+
+# Ignore any other unnecessary files
+*.whl
+.DS_Store
