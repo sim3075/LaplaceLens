@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuciones Estadísticas</title>
+</head>
+<body>
+    <h1>Seleccione una Distribución</h1>
+
+    <h2>Distribuciones Continuas</h2>
+    <ul>
+        <li><a href="{{ url_for('normal') }}">Normal</a></li>
+        <li><a href="{{ url_for('chi2_distribution') }}">Chi-cuadrado</a></li>
+        <li><a href="{{ url_for('gamma_distribution') }}">Gamma</a></li>
+        <li><a href="{{ url_for('t_student') }}">T-Student</a></li>
+        <li><a href="{{ url_for('f_distribution_view') }}">F</a></li>
+        <li><a href="{{ url_for('exponential') }}">Exponencial</a></li>
+    </ul>
+
+    <h2>Distribuciones Discretas</h2>
+    <ul>
+        <li><a href="{{ url_for('binomial') }}">Binomial</a></li>
+        <li><a href="{{ url_for('poisson_distribution') }}">Poisson</a></li>
+    </ul>
+</body>
+</html>
