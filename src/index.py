@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request
-from scipy.stats import norm, chi2, gamma, binom, poisson, t, f, expon
 import matplotlib
 matplotlib.use('Agg')
 import numpy as np
 import matplotlib.pyplot as plt
 import io
 import base64
+from scipy.stats import norm, chi2, gamma, binom, poisson, t, f, expon
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
+
+#funciones
 
 def calculate_normal(value, direction, mean, stddev):
     z = (value - mean) / stddev  
@@ -16,7 +18,7 @@ def calculate_normal(value, direction, mean, stddev):
         return norm.cdf(z)  
     elif direction == 'greater_than':
         return 1 - norm.cdf(z) 
-
+    
 def calculate_chi2(value, direction, df):
     if direction == 'less_than':
         return chi2.cdf(value, df)  
@@ -49,7 +51,6 @@ def calculate_poisson(value, mu, direction):
     elif direction == 'greater_than':
         return 1 - poisson.cdf(value - 1, mu)   
 
-
 def calculate_t_student(value, df, direction):
     if direction == 'equal':
         return t.pdf(value, df)  
@@ -57,7 +58,6 @@ def calculate_t_student(value, df, direction):
         return t.cdf(value, df)  
     elif direction == 'greater_than':
         return 1 - t.cdf(value, df)  
-
 
 def calculate_f_distribution(value, dfn, dfd, direction):
     if direction == 'less_than':
@@ -72,7 +72,8 @@ def calculate_exponential(value, scale, direction):
         return 1 - expon.cdf(value, scale=1/scale)  
 
 
-#FUNCIONES PARQA GRAFICAS DE LAS FINCIONES 
+#graficas
+
 def plot_normal_distribution(mean, stddev, value, direction):
     x = np.linspace(mean - 4 * stddev, mean + 4 * stddev, 1000)
     y = norm.pdf(x, mean, stddev)
@@ -315,6 +316,7 @@ def plot_exponential_distribution(scale, value, direction):
 
 
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -384,7 +386,7 @@ def calculate():
         p = float(request.form['p'])
         k = int(request.form['k'])
         direction = request.form.get('direction', 'less_than')  
-        result = calculate_binomial(n, p, k, direction)
+        result =calculate_binomial(n, p, k, direction)
         graph = plot_binomial_distribution(n, p, k, direction) 
 
     elif distribution == 'poisson':
@@ -398,7 +400,7 @@ def calculate():
         df = float(request.form['df'])
         direction = request.form.get('direction', 'less_than')
         result = calculate_t_student(value, df, direction)
-        graph = plot_t_student_distribution(df, value, direction)
+        graph =plot_t_student_distribution(df, value, direction)
 
 
     elif distribution == 'f_distribution':
