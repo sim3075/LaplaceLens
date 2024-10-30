@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribución Poisson</title>
+</head>
+<body>
+    <h1>Distribución Poisson</h1>
+    <form action="/calculate" method="post">
+        <input type="hidden" name="distribution" value="poisson">
+        
+        <label for="mu">Valor de X:</label>
+        <input type="number" id="mu" name="mu" step="any" required>
+
+        <label for="k">λ:</label>
+        <input type="number" id="k" name="k" required>
+
+        <label for="direction">Seleccione la dirección:</label>
+        <select id="direction" name="direction" multiple>
+            <option value="equal">P(X = x)</option>
+            <option value="less_than">P(X < x)</option>
+            <option value="greater_than">P(X > x)</option>
+        </select>
+
+        <button type="submit">Calcular</button>
+    </form>
+</body>
+</html>

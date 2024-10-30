@@ -41,17 +41,36 @@ def calculate_binomial(n, p, k, direction):
     elif direction == 'greater_than':
         return float(1 - binom.cdf(k - 1, n, p))
 
-def calculate_poisson(value, mu):
-    return poisson.cdf(value, mu)
+def calculate_poisson(value, mu, direction):
+    if direction == 'equal':
+        return poisson.pmf(value, mu)  
+    elif direction == 'less_than':
+        return poisson.cdf(value, mu)  
+    elif direction == 'greater_than':
+        return 1 - poisson.cdf(value - 1, mu)   
 
-def calculate_t_student(value, df):
-    return t.cdf(value, df)
 
-def calculate_f_distribution(value, dfn, dfd):
-    return f.cdf(value, dfn, dfd)
+def calculate_t_student(value, df, direction):
+    if direction == 'equal':
+        return t.pdf(value, df)  
+    elif direction == 'less_than':
+        return t.cdf(value, df)  
+    elif direction == 'greater_than':
+        return 1 - t.cdf(value, df)  
 
-def calculate_exponential(value, scale):
-    return expon.cdf(value, scale=scale)
+
+def calculate_f_distribution(value, dfn, dfd, direction):
+    if direction == 'less_than':
+        return f.cdf(value, dfn, dfd)   
+    elif direction == 'greater_than':
+        return 1 - f.cdf(value, dfn, dfd) 
+
+def calculate_exponential(value, scale, direction):
+    if direction == 'less_than':
+        return expon.cdf(value, scale=1/scale) 
+    elif direction == 'greater_than':
+        return 1 - expon.cdf(value, scale=1/scale)  
+
 
 #FUNCIONES PARQA GRAFICAS DE LAS FINCIONES 
 def plot_normal_distribution(mean, stddev, value, direction):
@@ -172,11 +191,133 @@ def plot_binomial_distribution(n, p, k, direction):
     
     return base64.b64encode(buf.getvalue()).decode('utf8')
 
+def plot_poisson_distribution(mu, k, direction):
+    x = np.arange(0, np.ceil(mu) * 3)  
+    y = poisson.pmf(x, mu)
+    
+    fig, ax = plt.subplots()
+    ax.bar(x, y, label='Distribución Poisson', color='blue', alpha=0.7)
+    
+    ax.axvline(k, color='red', linestyle='--', label=f'Valor: {k}')
+    
+    if direction == 'equal':
+        ax.bar(k, poisson.pmf(k, mu), color='orange', alpha=0.7, label=f'P(X = {k})')
+    elif direction == 'less_than':
+        ax.bar(x[x < k], y[x < k], color='orange', alpha=0.7, label=f'P(X < {k})')
+    elif direction == 'greater_than':
+        ax.bar(x[x > k], y[x > k], color='orange', alpha=0.7, label=f'P(X > {k})')
+    
+    ax.set_title('Distribución Poisson')
+    ax.set_xlabel('Número de eventos (X)')
+    ax.set_ylabel('Probabilidad')
+    ax.legend()
+    ax.grid(True)
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+
+    return base64.b64encode(buf.getvalue()).decode('utf8')
+
+def plot_t_student_distribution(df, value, direction):
+    x = np.linspace(-5, 5, 1000)  
+    y = t.pdf(x, df)
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y, label='Distribución T-Student', color='blue')
+    ax.axvline(value, color='red', linestyle='--', label=f'Valor: {value}')
+
+    if direction == 'less_than':
+        x_fill = np.linspace(-5, value, 1000)
+        y_fill = t.pdf(x_fill, df)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X < x)')
+    elif direction == 'greater_than':
+        x_fill = np.linspace(value, 5, 1000)
+        y_fill = t.pdf(x_fill, df)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X > x)')
+
+    ax.set_title('Distribución T-Student')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Densidad de Probabilidad')
+    ax.legend()
+    ax.grid()
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    return base64.b64encode(buf.getvalue()).decode('utf8')
+
+def plot_f_distribution(dfn, dfd, value, direction):
+    x = np.linspace(0, 5, 1000)  
+    y = f.pdf(x, dfn, dfd)
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y, label='Distribución F', color='blue')
+    ax.axvline(value, color='red', linestyle='--', label=f'Valor: {value}')
+
+    if direction == 'less_than':
+        x_fill = np.linspace(0, value, 1000)
+        y_fill = f.pdf(x_fill, dfn, dfd)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X < x)')
+    elif direction == 'greater_than':
+        x_fill = np.linspace(value, 5, 1000)
+        y_fill = f.pdf(x_fill, dfn, dfd)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X > x)')
+    elif direction == 'equal':
+        ax.bar(value, f.pdf(value, dfn, dfd), color='orange', alpha=0.7, label=f'P(X = {value})')
+    
+    ax.set_title('Distribución F')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Densidad de Probabilidad')
+    ax.legend()
+    ax.grid(True)
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    
+    return base64.b64encode(buf.getvalue()).decode('utf8')
+
+def plot_exponential_distribution(scale, value, direction):
+    x = np.linspace(0, 10, 1000) 
+    y = expon.pdf(x, scale=scale)
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y, label='Distribución Exponencial', color='blue')
+    ax.axvline(value, color='red', linestyle='--', label=f'Valor: {value}')
+
+    if direction == 'less_than':
+        x_fill = np.linspace(0, value, 1000)
+        y_fill = expon.pdf(x_fill, scale=scale)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X < x)')
+    elif direction == 'greater_than':
+        x_fill = np.linspace(value, 10, 1000)
+        y_fill = expon.pdf(x_fill, scale=scale)
+        ax.fill_between(x_fill, y_fill, alpha=0.5, color='orange', label='P(X > x)')
+    elif direction == 'equal':
+        ax.bar(value, expon.pdf(value, scale=scale), color='orange', alpha=0.7, label=f'P(X = {value})')
+    
+    ax.set_title('Distribución Exponencial')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Densidad de Probabilidad')
+    ax.legend()
+    ax.grid(True)
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    
+    return base64.b64encode(buf.getvalue()).decode('utf8')
+
+
+
 @app.route('/')
 def index():
-    continuous = ['Normal', 'Chi-cuadrado', 'Gamma', 'T-Student', 'F', 'Exponencial']
-    discrete = ['Binomial', 'Poisson']
-    return render_template('index.html', continuous=continuous, discrete=discrete)
+    return render_template('index.html')
 
 @app.route('/normal')
 def normal():
@@ -192,11 +333,11 @@ def gamma_distribution():
 
 @app.route('/tstudent')
 def t_student():
-    return render_template('t_student.html')
+    return render_template('tstudent.html')
 
 @app.route('/f')
 def f_distribution_view():
-    return render_template('f_distribution.html')
+    return render_template('f.html')
 
 @app.route('/exponential')
 def exponential():
@@ -238,7 +379,7 @@ def calculate():
         result = calculate_gamma(value, alpha, beta, direction)
         graph = plot_gamma_distribution(alpha, beta, value, direction)
 
-    if distribution == 'binomial':
+    elif distribution == 'binomial':
         n = int(request.form['n'])
         p = float(request.form['p'])
         k = int(request.form['k'])
@@ -248,17 +389,30 @@ def calculate():
 
     elif distribution == 'poisson':
         mu = float(request.form['mu'])
-        result = calculate_poisson(value, mu)
+        k = int(request.form['k'])
+        direction = request.form.get('direction')  
+        result = calculate_poisson(mu, k, direction)
+        graph = plot_poisson_distribution(mu, k, direction)
+
     elif distribution == 't_student':
         df = float(request.form['df'])
-        result = calculate_t_student(value, df)
+        direction = request.form.get('direction', 'less_than')
+        result = calculate_t_student(value, df, direction)
+        graph = plot_t_student_distribution(df, value, direction)
+
+
     elif distribution == 'f_distribution':
         dfn = float(request.form['dfn'])
         dfd = float(request.form['dfd'])
-        result = calculate_f_distribution(value, dfn, dfd)
-    elif distribution == 'exponential':
+        direction = request.form.get('direction', 'less_than')
+        result = calculate_f_distribution(value, dfn, dfd, direction)
+        graph = plot_f_distribution(dfn, dfd, value, direction)
+
+    elif distribution == 'exponential_distribution':
         scale = float(request.form['scale'])
-        result = calculate_exponential(value, scale)
+        direction = request.form.get('direction', 'less_than')
+        result = calculate_exponential(value, scale, direction)
+        graph = plot_exponential_distribution(scale, value, direction)
     else:
         result = 'Distribución invalida'
     

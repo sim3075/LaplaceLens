@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribución Exponencial</title>
+</head>
+<body>
+    <h1>Distribución Exponencial</h1>
+    <form action="/calculate" method="POST">
+        <input type="hidden" name="distribution" value="exponential_distribution">
+
+        <label for="value">Valor de X:</label>
+        <input type="number" id="value" name="value" step="any" required>
+        <br><br>
+
+        <label for="scale">Escala: </label>
+        <input type="number" id="scale" name="scale" step="any" required>
+        <br><br>
+
+        <label for="direction">Dirección:</label>
+        <select id="direction" name="direction" required>
+            <option value="less_than">P(X &lt; x)</option>
+            <option value="greater_than">P(X &gt; x)</option>
+        </select>
+        <br><br>
+
+        <button type="submit">Calcular</button>
+    </form>
+</body>
+</html>
