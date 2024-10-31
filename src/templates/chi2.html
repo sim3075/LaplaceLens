@@ -1,17 +1,98 @@
-<h1>Distribución chi2 </h1>
-<form action="/calculate" method="post">
-    <input type="hidden" name="distribution" value="chi2">
-    <label for="df">Grados de libertad:</label>
-    <input type="number" name="df" id="df" required>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribución Chi-cuadrado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e7e3fc;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
 
-    <label for="value">Valor de X:</label>
-    <input type="number" name="value" id="value" required>
+        h1 {
+            color: #2C3E50;
+            margin-bottom: 20px;
+        }
 
-    <label for="direction">Dirección:</label>
-    <select name="direction" id="direction">
-        <option value="less_than">P(X < x)</option>
-        <option value="greater_than">P(X > x)</option>
-    </select>
+        form {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 300px;
+        }
 
-    <button type="submit">Calcular</button>
-</form>
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+
+        input, select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #1B4472ff;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1A3564;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2980b9;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1A3564;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Distribución Chi-cuadrado</h1>
+    <form action="/calculate" method="post">
+        <input type="hidden" name="distribution" value="chi2">
+        <label for="df">Grados de libertad:</label>
+        <input type="number" name="df" id="df" required>
+
+        <label for="value">Valor de X:</label>
+        <input type="number" name="value" id="value" required>
+
+        <label for="direction">Dirección:</label>
+        <select name="direction" id="direction">
+            <option value="less_than">P(X < x)</option>
+            <option value="greater_than">P(X > x)</option>
+        </select>
+
+        <button type="submit">Calcular</button>
+    </form>
+    <a href="/">Volver a la selección de distribuciones</a>   
+</body>
+</html>

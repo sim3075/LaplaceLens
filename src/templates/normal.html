@@ -3,10 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distribución normal</title>
+    <title>Distribución Normal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e7e3fc;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center; 
+        }
+
+        h1 {
+            color: #2C3E50;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff; 
+            border-radius: 10px; 
+            padding: 20px; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+            display: inline-block; 
+            width: 300px; 
+        }
+
+        label {
+            display: block; 
+            margin: 10px 0 5px;
+            text-align: left; 
+        }
+
+        input, select {
+            width: calc(100% - 20px); 
+            padding: 10px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+        }
+
+        button {
+            background-color: #1B4472ff; 
+            color: #ffffff; 
+            border: none; 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+        }
+
+        button:hover {
+            background-color: #1A3564; 
+        }
+
+        @media (max-width: 600px) {
+            form {
+                width: 90%; 
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Distribución normal </h1>
+    <h1>Distribución Normal</h1>
     <form action="/calculate" method="post">
         <input type="hidden" name="distribution" value="normal">
         
@@ -16,16 +74,17 @@
         <label for="mean">Ingrese la media (μ):</label>
         <input type="number" id="mean" name="mean" step="any" value="0" required>
 
-        <label for="stddev">Ingrese la desviación estandar (σ):</label>
+        <label for="stddev">Ingrese la desviación estándar (σ):</label>
         <input type="number" id="stddev" name="stddev" step="any" value="1" required>
 
         <label for="direction">Seleccione la dirección:</label>
-        <select id="direction" name="direction">
+        <select id="direction" name="direction" required>
             <option value="less_than">P(X < x)</option>
             <option value="greater_than">P(X > x)</option>
         </select>
 
         <button type="submit">Calcular</button>
     </form>
+
 </body>
 </html>
