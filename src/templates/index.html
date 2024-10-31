@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,14 @@
             background-color: #e7e3fc;
             color: #333;
             margin: 0;
-            padding: 20px; 
+            padding: 20px;
             text-align: center;
         }
 
         header {
             display: flex;
             align-items: center;
-            background-color: #1B4472ff;
+            background-color: #1B4472;
             padding: 10px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -25,14 +25,14 @@
         }
 
         .logo img {
-            width: 60px; 
-            height: 60px; 
-            border-radius: 5px; 
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
         }
 
         h1 {
-            color: #2C3E50; 
-            margin: 0; 
+            color: #2C3E50;
+            margin: 0;
         }
 
         h2 {
@@ -66,13 +66,13 @@
             margin-bottom: 10px;
         }
 
-        .distributions-list {
+        .distributions-list, .hypothesis-list {
             display: none;
             margin-top: 10px;
             text-align: left;
         }
 
-        .distributions-list li {
+        .distributions-list li, .hypothesis-list li {
             margin: 8px 0;
         }
 
@@ -101,13 +101,20 @@
         function toggleList(type) {
             const continuousList = document.getElementById('continuous-list');
             const discreteList = document.getElementById('discrete-list');
+            const hypothesisList = document.getElementById('hypothesis-list');
 
             if (type === 'continuous') {
                 continuousList.style.display = continuousList.style.display === 'block' ? 'none' : 'block';
                 discreteList.style.display = 'none';
+                hypothesisList.style.display = 'none';
             } else if (type === 'discrete') {
                 discreteList.style.display = discreteList.style.display === 'block' ? 'none' : 'block';
                 continuousList.style.display = 'none';
+                hypothesisList.style.display = 'none';
+            } else if (type === 'hypothesis') {
+                hypothesisList.style.display = hypothesisList.style.display === 'block' ? 'none' : 'block';
+                continuousList.style.display = 'none';
+                discreteList.style.display = 'none';
             }
         }
     </script>
@@ -118,7 +125,7 @@
         <h2>Estadística en Línea</h2>
     </header>
 
-    <h1>Seleccione una Distribución</h1>
+    <h1>Seleccione una Opción</h1>
 
     <div class="card-container">
         <div class="card" onclick="toggleList('continuous')">
@@ -132,13 +139,19 @@
                 <li><a href="{{ url_for('continuous.exponential') }}">Exponencial</a></li>
             </ul>
         </div>
-    </div>
-    <div class="card-container">
+
         <div class="card" onclick="toggleList('discrete')">
             <h3>Distribuciones Discretas</h3>
             <ul id="discrete-list" class="distributions-list">
                 <li><a href="{{ url_for('discrete.binomial') }}">Binomial</a></li>
                 <li><a href="{{ url_for('discrete.poisson_distribution') }}">Poisson</a></li>
+            </ul>
+        </div>
+
+        <div class="card" onclick="toggleList('hypothesis')">
+            <h3>Pruebas de Hipótesis</h3>
+            <ul id="hypothesis-list" class="hypothesis-list">
+                <li><a href="{{ url_for('hypothesis.chi_square_test') }}">Chi-cuadrado</a></li>
             </ul>
         </div>
     </div>

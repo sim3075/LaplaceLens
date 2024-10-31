@@ -86,5 +86,4 @@ def calculate():
         result = 'Distribución invalida'
         result = round(result, 4)
 
-    print(result)
     return render_template('result.html', result=result, graph=graph)
