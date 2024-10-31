@@ -12,7 +12,6 @@
             margin: 0;
             padding: 20px; 
             text-align: center;
-            
         }
 
         header {
@@ -37,29 +36,50 @@
         }
 
         h2 {
-            color:#ffffff;
-            margin-left: 15px;;
-        }
-        h3 {
-            color:#2C3E50;
-            margin: 15px 0 10px 0;
+            color: #ffffff;
+            margin-left: 15px;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            display: inline-block;
+        .card-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
         }
 
-        li {
-            margin: 10px 0;
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h3 {
+            color: #2C3E50;
+            margin-bottom: 10px;
+        }
+
+        .distributions-list {
+            display: none;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .distributions-list li {
+            margin: 8px 0;
         }
 
         a {
             text-decoration: none;
             color: #2C3E50;
-            padding: 10px 15px;
+            padding: 8px;
             border-radius: 5px;
             transition: background-color 0.3s;
             background-color: #ecf0f1;
@@ -70,45 +90,57 @@
             background-color: #bdc3c7;
         }
 
-
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.5em;
-            }
-
-            h2 {
-                font-size: 1.2em;
-            }
-
-            a {
-                padding: 8px 12px;
+            .card-container {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
+    <script>
+        function toggleList(type) {
+            const continuousList = document.getElementById('continuous-list');
+            const discreteList = document.getElementById('discrete-list');
+
+            if (type === 'continuous') {
+                continuousList.style.display = continuousList.style.display === 'block' ? 'none' : 'block';
+                discreteList.style.display = 'none';
+            } else if (type === 'discrete') {
+                discreteList.style.display = discreteList.style.display === 'block' ? 'none' : 'block';
+                continuousList.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
     <header>
         <div class="logo"><img src="https://i.pinimg.com/564x/f4/e9/ad/f4e9ad37a1357699e00e970991fa40f7.jpg" alt="Logo"></div>
-        
         <h2>Estadística en Línea</h2>
     </header>
 
     <h1>Seleccione una Distribución</h1>
 
-    <h3>Distribuciones Continuas</h3>
-    <ul>
-        <li><a href="{{ url_for('normal') }}">Normal</a></li>
-        <li><a href="{{ url_for('chi2_distribution') }}">Chi-cuadrado</a></li>
-        <li><a href="{{ url_for('gamma_distribution') }}">Gamma</a></li>
-        <li><a href="{{ url_for('t_student') }}">T-Student</a></li>
-        <li><a href="{{ url_for('f_distribution_view') }}">F de fisher</a></li>
-        <li><a href="{{ url_for('exponential') }}">Exponencial</a></li>
-    </ul>
-
-    <h3>Distribuciones Discretas</h3>
-    <ul>
-        <li><a href="{{ url_for('binomial') }}">Binomial</a></li>
-        <li><a href="{{ url_for('poisson_distribution') }}">Poisson</a></li>
-    </ul>
+    <div class="card-container">
+        <div class="card" onclick="toggleList('continuous')">
+            <h3>Distribuciones Continuas</h3>
+            <ul id="continuous-list" class="distributions-list">
+                <li><a href="{{ url_for('continuous.normal') }}">Normal</a></li>
+                <li><a href="{{ url_for('continuous.chi2_distribution') }}">Chi-cuadrado</a></li>
+                <li><a href="{{ url_for('continuous.gamma_distribution') }}">Gamma</a></li>
+                <li><a href="{{ url_for('continuous.t_student') }}">T-Student</a></li>
+                <li><a href="{{ url_for('continuous.f_distribution_view') }}">F de Fisher</a></li>
+                <li><a href="{{ url_for('continuous.exponential') }}">Exponencial</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-container">
+        <div class="card" onclick="toggleList('discrete')">
+            <h3>Distribuciones Discretas</h3>
+            <ul id="discrete-list" class="distributions-list">
+                <li><a href="{{ url_for('discrete.binomial') }}">Binomial</a></li>
+                <li><a href="{{ url_for('discrete.poisson_distribution') }}">Poisson</a></li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
