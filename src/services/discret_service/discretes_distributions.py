@@ -2,21 +2,32 @@ import matplotlib
 matplotlib.use('Agg')
 from scipy.stats import binom, poisson
 
-
 def calculate_binomial(n, p, k, direction):
     if direction == 'equal':
-        return float(binom.pmf(k, n, p))
+        result= float(binom.pmf(k, n, p))
     
     elif direction == 'less_than':
-        return float(binom.cdf(k - 1, n, p))
+        result= float(binom.cdf(k - 1, n, p))
 
     elif direction == 'greater_than':
-        return float(1 - binom.cdf(k - 1, n, p))
+        result= float(1 - binom.cdf(k - 1, n, p))
+
+    if abs(result) < 1e-6:
+        result = 0
+    else:
+        result = round(result, 6)
+    return result
 
 def calculate_poisson(value, mu, direction):
     if direction == 'equal':
-        return poisson.pmf(value, mu)  
+        result= poisson.pmf(value, mu)  
     elif direction == 'less_than':
-        return poisson.cdf(value, mu)  
+        result= poisson.cdf(value, mu)  
     elif direction == 'greater_than':
-        return 1 - poisson.cdf(value - 1, mu)   
+        result= 1 - poisson.cdf(value - 1, mu)   
+    
+    if abs(result) < 1e-6:
+        result = 0
+    else:
+        result = round(result, 6)
+    return result
