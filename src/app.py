@@ -3,18 +3,21 @@ from routes.continuous_distributions import continuous
 from routes.discrete_distributions import discrete
 from routes.hypothesis_test import hypothesis
 
-app = Flask(__name__)
+def createApp():
+    app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
- 
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+    
 
-app.register_blueprint(continuous)
+    app.register_blueprint(continuous)
 
-app.register_blueprint(discrete)
+    app.register_blueprint(discrete)
 
-app.register_blueprint(hypothesis)
+    app.register_blueprint(hypothesis)
 
-app.add_url_rule('/', endpoint='index')
+    app.add_url_rule('/', endpoint='index')
+
+    return app

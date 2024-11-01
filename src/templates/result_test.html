@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2C3E50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2980b9;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1A3564;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            a {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+   
+    {% if result %}
+        <h2>Resultado:</h2>
+        <p>Estadístico Chi-cuadrado: {{ result.chi2_stat }}</p>
+        <p>Valor p: {{ result.p_value }}</p>
+        <p>{{ "Rechazamos" if result.reject_null else "No rechazamos" }} la hipótesis nula.</p>
+    {% endif %}
+
+ 
+    <a href="/">Volver a la selección de distribuciones</a>   
+</body>
+
+</html>

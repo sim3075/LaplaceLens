@@ -66,7 +66,7 @@
 <body>
     <h1>Prueba de Chi-cuadrado</h1>
     <h1>Con bondad de ajuste</h1>
-    <form  action="/hypothesis/chi_square_test" method="POST">
+    <form  action="/hypothesis/chi_cuadrado" method="POST">
         <label for="observed">Valores observados (separados por comas):</label>
         <input type="text" name="observed" required>
 
@@ -75,13 +75,6 @@
 
         <button type="submit">Calcular</button>
     </form>
-
-    {% if result %}
-        <h2>Resultado:</h2>
-        <p>Estadístico Chi-cuadrado: {{ result.chi2_stat }}</p>
-        <p>Valor p: {{ result.p_value }}</p>
-        <p>{{ "Rechazamos" if result.reject_null else "No rechazamos" }} la hipótesis nula.</p>
-    {% endif %}
 
 </body>
 </html>
