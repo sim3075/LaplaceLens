@@ -16,5 +16,3 @@ app.register_blueprint(discrete)
 app.register_blueprint(hypothesis)
 app.add_url_rule('/', endpoint='index')
 
-if __name__ == '__main__':
-    app.run(debug=False)
